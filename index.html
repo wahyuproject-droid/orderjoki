@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhyProject - Order Summit</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: white;
+      margin: 0;
+    }
+
+    /* Header */
+    header {
+      background: rgba(0,0,0,0.9);
+      padding: 20px;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      display: flex; align-items: center;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+    }
+    .menu-btn {
+      width: 40px; height: 28px; position: relative; cursor: pointer;
+    }
+    .menu-btn span {
+      position: absolute; height: 5px; width: 100%; background: #00eaff;
+      border-radius: 6px; transition: 0.3s;
+    }
+    .menu-btn span:nth-child(1){ top:0; }
+    .menu-btn span:nth-child(2){ top:11px; }
+    .menu-btn span:nth-child(3){ top:22px; }
+    .menu-btn.active span:nth-child(1){ transform:rotate(45deg); top:11px; }
+    .menu-btn.active span:nth-child(2){ opacity:0; }
+    .menu-btn.active span:nth-child(3){ transform:rotate(-45deg); top:11px; }
+    header h2 { margin:0; margin-left:20px; font-size:26px; }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed; top: 0; left: -300px;
+      width: 280px; height: 100%;
+      background: rgba(20,20,20,0.98);
+      padding: 80px 25px 25px 25px; /* 🔥 kasih jarak ke bawah */
+      transition: 0.3s; z-index: 999;
+      box-shadow: 4px 0 20px rgba(0,0,0,0.7);
+    }
+    .sidebar a {
+      display: flex; align-items: center;
+      margin: 30px 0; /* jarak antar menu */
+      font-size: 20px;
+      color: #ddd; text-decoration: none;
+      padding: 14px; border-radius: 10px; transition: 0.2s;
+    }
+    .sidebar a:hover { background:#00eaff; color:#111; font-weight: bold; }
+    .sidebar a span { margin-left: 12px; }
+
+    /* Main */
+    main { padding-top: 120px; text-align: center; }
+
+    .card {
+      background: rgba(255,255,255,0.1);
+      padding: 30px; border-radius: 22px;
+      margin: 30px auto; width: 92%; max-width: 500px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.7);
+    }
+    .card h2 { font-size: 26px; margin-bottom: 20px; }
+
+    input, select {
+      padding: 16px; margin: 14px 0;
+      border-radius: 14px; border: none;
+      width: 95%; font-size: 18px;
+    }
+    button {
+      width: 95%; padding: 16px; margin-top: 15px;
+      border: none; border-radius: 14px;
+      background: #00eaff; color: #111;
+      cursor: pointer; font-weight: bold; font-size: 20px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.5);
+    }
+    button:hover { background:#00b7c6; transform:scale(1.03); }
+
+    .history {
+      background: rgba(255,255,255,0.15);
+      margin: 16px auto; padding: 18px;
+      border-radius: 14px; width: 92%; max-width: 500px;
+      text-align: left; font-size: 18px;
+      border-left: 6px solid #00eaff;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+    }
+
+    #cekPage { display: none; }
+    #riwayat p { font-size: 18px; }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="menu-btn" id="menuBtn" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+    <h2>WhyProject - Summit</h2>
+  </header>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <a href="#" onclick="showOrderPage()">🏔 <span>Buat Order</span></a>
+    <a href="#" onclick="showCekPage()">🔍 <span>Cek Order</span></a>
+  </div>
+
+  <!-- Main -->
+  <main>
+    <!-- Buat Order -->
+    <div id="orderPage">
+      <div class="card">
+        <h2>🏔 Buat Order</h2>
+        <input type="text" id="username" placeholder="Username Roblox"><br>
+        <input type="text" id="whatsapp" placeholder="Nomor WhatsApp (62...)"><br>
+        <select id="gunung">
+          <option>Sunda</option><option>Yahayuk</option><option>Maaf</option>
+          <option>Hejo</option><option>Saminung</option>
+          <option>Talobanua</option><option>Aduh</option><option>Yahaha</option>
+        </select><br>
+        <input type="number" id="jumlah" min="1" placeholder="Jumlah Summit"><br>
+        <button onclick="buatOrder()">📌 Buat Order</button>
+      </div>
+    </div>
+
+    <!-- Cek Order -->
+    <div id="cekPage">
+      <h2 style="font-size:26px;">🔍 Cek Order</h2>
+      <input type="text" id="cekUsername" placeholder="Masukkan username Roblox">
+      <button onclick="cekTransaksi()">Cek Transaksi</button>
+      <div id="riwayat"></div>
+    </div>
+  </main>
+
+  <!-- Script -->
+  <script>
+    function toggleMenu(){
+      let sb=document.getElementById("sidebar"), btn=document.getElementById("menuBtn");
+      if(sb.style.left==="0px"){ sb.style.left="-300px"; btn.classList.remove("active"); }
+      else{ sb.style.left="0px"; btn.classList.add("active"); }
+    }
+    function showOrderPage(){ 
+      document.getElementById("orderPage").style.display="block"; 
+      document.getElementById("cekPage").style.display="none"; 
+      toggleMenu(); 
+    }
+    function showCekPage(){ 
+      document.getElementById("orderPage").style.display="none"; 
+      document.getElementById("cekPage").style.display="block"; 
+      toggleMenu(); 
+    }
+    function buatID(){ return "WHYPRO-"+Math.random().toString(36).substring(2,8).toUpperCase(); }
+    function formatRupiah(n){ return "Rp"+n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,"."); }
+    function buatOrder(){
+      let u=document.getElementById("username").value.trim(),
+          w=document.getElementById("whatsapp").value.trim(),
+          g=document.getElementById("gunung").value,
+          j=parseInt(document.getElementById("jumlah").value)||0;
+      if(!u||!w||j<=0){ alert("⚠️ Lengkapi data!"); return; }
+      let pasangan=Math.floor(j/2), sisa=j%2, total=pasangan*1000+sisa*2000;
+      let order={ id:buatID(), username:u, whatsapp:w, gunung:g, jumlah:j, total:total, status:"Menunggu Admin" };
+      let orders=JSON.parse(localStorage.getItem("orders")||"[]"); orders.unshift(order);
+      localStorage.setItem("orders",JSON.stringify(orders));
+      alert("✅ Order berhasil!\nAdmin akan menghubungi WhatsApp Anda untuk pembayaran.\nID: "+order.id);
+      showCekPage();
+    }
+    function cekTransaksi(){
+      let u=document.getElementById("cekUsername").value.trim(),
+          orders=JSON.parse(localStorage.getItem("orders")||"[]"),
+          userOrders=orders.filter(o=>o.username.toLowerCase()===u.toLowerCase()), html="";
+      if(userOrders.length===0) html="<p>⚠️ Tidak ada transaksi.</p>";
+      else userOrders.forEach(o=>{ html+=`
+        <div class="history"><b>${o.id}</b><br>
+        Gunung: ${o.gunung}<br>Summit: ${o.jumlah}<br>
+        Total: ${formatRupiah(o.total)}<br>
+        Status: <b>${o.status}</b><br>WA: ${o.whatsapp}</div>`; });
+      document.getElementById("riwayat").innerHTML=html;
+    }
+  </script>
+</body>
+</html>
