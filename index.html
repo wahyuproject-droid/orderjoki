@@ -1,166 +1,218 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <title>WhyProject - Joki Summit Roblox</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JOKMOUNTWHY — Toko Joki Summit</title>
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: #fff;
-      text-align: center;
-      padding: 40px;
+    :root{
+      --bg:#0b0f14;--card:#111826;--muted:#9fb0c0;--text:#e6edf3;--accent:#6ad6ff;--brand:#7c5cff;--brand-2:#16d16d;--danger:#ff4d4d;--warn:#ffb020;--ok:#2fd36a;
     }
-    h1 {
-      font-size: 2.5rem;
-      color: #00eaff;
-      text-shadow: 0 0 20px #00eaff, 0 0 40px #0088ff;
-      margin-bottom: 25px;
-      letter-spacing: 1px;
-    }
-    .card {
-      background: rgba(0,0,0,0.65);
-      padding: 30px;
-      border-radius: 22px;
-      display: inline-block;
-      box-shadow: 0 0 30px rgba(0, 234, 255, 0.6);
-      margin-bottom: 20px;
-      width: 370px;
-      backdrop-filter: blur(6px);
-    }
-    h2 {
-      margin-bottom: 15px;
-      font-size: 1.5rem;
-      color: #76ffb0;
-      text-shadow: 0 0 12px #76ffb0;
-    }
-    label {
-      display: block;
-      margin: 12px 0 6px;
-      font-weight: bold;
-    }
-    select, input {
-      padding: 12px;
-      border-radius: 12px;
-      border: none;
-      margin-bottom: 12px;
-      width: 100%;
-      text-align: center;
-      font-size: 15px;
-      background: #1c1f26;
-      color: #fff;
-      box-shadow: 0 0 10px rgba(0,234,255,0.3) inset;
-    }
-    button {
-      padding: 14px 26px;
-      border: none;
-      border-radius: 14px;
-      background: linear-gradient(90deg, #00eaff, #0088ff);
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 12px;
-      box-shadow: 0 0 20px #00eaff;
-      transition: 0.3s;
-      font-size: 15px;
-    }
-    button:hover { transform: scale(1.07); }
-    .result {
-      margin-top: 22px;
-      font-size: 16px;
-      font-weight: bold;
-      color: #00eaff;
-      text-shadow: 0 0 10px #00eaff;
-      text-align: left;
-      padding: 15px;
-      border-radius: 15px;
-      background: rgba(0,0,0,0.45);
-      line-height: 1.6em;
-    }
-    .highlight { color: #76ffb0; text-shadow: 0 0 12px #76ffb0; }
-    .wa-btn {
-      display: inline-block;
-      margin-top: 15px;
-      padding: 12px 24px;
-      border-radius: 12px;
-      background: #25d366;
-      color: #fff;
-      font-weight: bold;
-      text-decoration: none;
-      box-shadow: 0 0 15px #25d366;
-      transition: 0.3s;
-    }
-    .wa-btn:hover { transform: scale(1.05); background: #1ebe5d; }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial}
+    .wrap{max-width:1100px;margin:32px auto;padding:0 16px}
+    header{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+    h1{margin:0;font-size:28px;color:var(--accent)}
+    .sub{color:var(--muted);font-size:14px}
+    .grid{display:grid;grid-template-columns:1.6fr .9fr;gap:20px}
+    @media(max-width:900px){.grid{grid-template-columns:1fr}}
+    .card{background:var(--card);border-radius:14px;padding:14px;box-shadow:0 4px 12px rgba(0,0,0,.5)}
+    .list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+    .item{background:#1a2233;border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;position:relative;transition:transform .2s}
+    .item:hover{transform:scale(1.03)}
+    .dot{width:12px;height:12px;border-radius:50%}
+    .dot.red{background:var(--danger)}
+    .dot.yellow{background:var(--warn)}
+    .dot.green{background:var(--ok)}
+    .qty-input{margin-left:auto;display:flex;align-items:center;gap:4px}
+    .qty-input input{width:40px;text-align:center;background:#000;border:none;border-radius:6px;color:#fff;padding:4px}
+    .qty-btn{width:26px;height:26px;border:none;border-radius:6px;cursor:pointer;background:var(--brand-2);color:#fff;font-weight:bold}
+    .actions{margin-top:10px;display:flex;justify-content:space-between;align-items:center}
+    .btn{padding:8px 14px;border:none;border-radius:8px;cursor:pointer;transition:all .2s}
+    .btn.secondary{background:#333;color:#fff}
+    .btn.primary{background:var(--brand-2);color:#fff}
+    .btn:hover{opacity:.8;transform:scale(1.05)}
+    .receipt{background:#1a2233;border-radius:12px;padding:12px;min-height:220px;box-shadow:inset 0 0 12px rgba(0,0,0,.5)}
+    .receipt .row{display:flex;justify-content:space-between;border-bottom:1px dashed #444;padding:6px 0;font-size:14px}
+    .receipt .row strong{color:var(--accent)}
+    dialog{border:none;border-radius:14px;padding:0;max-width:500px;width:90%;animation:fadeIn .3s ease-out}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+    .modal-head{padding:12px;background:var(--brand);color:#fff;display:flex;justify-content:space-between;align-items:center;font-weight:bold;border-radius:14px 14px 0 0}
+    .modal-body{padding:16px;background:#111;color:#eee;font-size:14px;line-height:1.4}
+    .modal-body h3{margin-top:0;text-align:center;color:var(--accent)}
+    .modal-foot{padding:12px;background:#222;display:flex;justify-content:flex-end;gap:8px;border-radius:0 0 14px 14px}
+    .checkmark{position:absolute;right:6px;top:6px;background:var(--ok);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:12px;animation:pop .5s ease}
+    @keyframes pop{0%{transform:scale(0)}70%{transform:scale(1.3)}100%{transform:scale(1)}}
   </style>
 </head>
 <body>
-  <h1>WhyProject - Order Joki Summit Roblox</h1>
-
-  <div class="card">
-    <h2>🗻 Pilih Gunung</h2>
-    <label for="gunung">Gunung</label>
-    <select id="gunung">
-      <option value="Sunda">Gunung Sunda</option>
-      <option value="Yahayuk">Gunung Yahayuk</option>
-      <option value="Maaf">Gunung Maaf</option>
-      <option value="Hejo">Gunung Hejo</option>
-      <option value="Saminung">Gunung Saminung</option>
-      <option value="Talobanua">Gunung Talobanua</option>
-      <option value="Aduh">Gunung Aduh</option>
-      <option value="Yahaha">Gunung Yahaha</option>
-    </select>
-
-    <label for="jumlah">Jumlah Order (summit)</label>
-    <input type="number" id="jumlah" placeholder="Masukkan jumlah summit" min="1">
-
-    <button onclick="hitungJoki()">🔎 Hitung Harga</button>
-    <div class="result" id="hasilJoki"></div>
-    <div id="waBtnContainer"></div>
+  <div class="wrap">
+    <header>
+      <h1>JOKMOUNTWHY</h1>
+      <div class="sub">Toko Joki Summit • 1 JOKI = 500 PERAK</div>
+    </header>
+    <div class="grid">
+      <section class="card">
+        <h2>List Gunung</h2>
+        <div id="list" class="list"></div>
+        <div class="actions">
+          <span id="total">Total: 0 PERAK</span>
+          <div>
+            <button class="btn secondary" id="btnReset">Reset</button>
+            <button class="btn primary" id="btnBayar">Bayar & Struk</button>
+          </div>
+        </div>
+      </section>
+      <aside class="card">
+        <h2>Struk</h2>
+        <div id="receipt" class="receipt">
+          <div class="row"><span>Belum ada pilihan</span></div>
+        </div>
+      </aside>
+    </div>
   </div>
 
+  <dialog id="modal">
+    <div class="modal-head">
+      <span>Struk Pembelian</span>
+      <button id="btnClose">❌</button>
+    </div>
+    <div class="modal-body"><div id="modalContent"></div></div>
+    <div class="modal-foot">
+      <button class="btn secondary" id="btnPrint">Cetak</button>
+      <button class="btn primary" id="btnOk">OK</button>
+    </div>
+  </dialog>
+
+  <template id="tpl-item">
+    <div class="item">
+      <span class="dot"></span>
+      <span class="name"></span>
+      <div class="qty-input">
+        <button class="qty-btn" data-act="-">-</button>
+        <input type="number" value="0" min="0"/>
+        <button class="qty-btn" data-act="+">+</button>
+      </div>
+    </div>
+  </template>
+
   <script>
-    function formatRupiah(n) {
-      return "Rp" + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    const PRICE = 500;
+    const WA_NUMBER = "6281234567890"; // Ganti dengan nomor WhatsApp tujuan
+    const items = [
+      {name:'Mount Daun',color:'yellow'},{name:'Mount Yagataw',color:'red'},{name:'Mount Arunika',color:'red'},
+      {name:'Mount Sibuatan',color:'yellow'},{name:'Mount Yahayuk',color:'green'},{name:'Mount Talobanua',color:'green'},
+      {name:'Mount Sunda',color:'green'},{name:'Mount Jawa',color:'green'},{name:'Mount Tanralili',color:'green'},
+      {name:'Mount Duntul',color:'green'},{name:'Mount Semesta',color:'green'},{name:'Mount Hejo',color:'green'},
+      {name:'Mount Konoha',color:'green'},{name:'Mount Atin',color:'green'},{name:'Mount Yaudah',color:'green'},
+      {name:'Mount Appalachia',color:'green'},{name:'Mount Sumbing',color:'yellow'},{name:'Mount Seminung',color:'green'},
+      {name:'Mount Maaf',color:'green'},{name:'Mount Liora',color:'green'},{name:'Mount Aduh',color:'green'},
+      {name:'Mount Yahaha',color:'green'},
+    ];
+    const state = new Map();
+    const elList=document.getElementById('list'), elReceipt=document.getElementById('receipt'), elTotal=document.getElementById('total');
+    const modal=document.getElementById('modal'), modalContent=document.getElementById('modalContent');
+
+    function formatCurrency(n){
+      if(n>=1e9) return (n/1e9).toFixed(1).replace(/\.0$/,'')+' MILIAR';
+      if(n>=1e6) return (n/1e6).toFixed(1).replace(/\.0$/,'')+' JUTA';
+      if(n>=1e3) return n.toLocaleString('id-ID')+' RIBU';
+      return n+' PERAK';
     }
 
-    function buatID() {
-      return "WHYPRO-" + Math.random().toString(36).substring(2,8).toUpperCase();
+    function render(){
+      elList.innerHTML='';
+      const tpl=document.getElementById('tpl-item');
+      items.forEach(it=>{
+        const node=tpl.content.firstElementChild.cloneNode(true);
+        node.querySelector('.name').textContent=it.name;
+        node.querySelector('.dot').classList.add(it.color);
+        const input=node.querySelector('input');
+        input.value=state.get(it.name)||0;
+        node.querySelectorAll('.qty-btn').forEach(btn=>{
+          btn.addEventListener('click',()=>{
+            let val=state.get(it.name)||0;
+            if(btn.dataset.act==='+') val++; else if(val>0) val--;
+            state.set(it.name,val);
+            input.value=val; updateReceipt(node,it.name);
+          });
+        });
+        input.addEventListener('input',()=>{
+          let val=parseInt(input.value)||0; if(val<0) val=0;
+          state.set(it.name,val); input.value=val; updateReceipt(node,it.name);
+        });
+        elList.appendChild(node);
+      });
+      updateReceipt();
     }
 
-    function hitungJoki() {
-      let gunung = document.getElementById("gunung").value;
-      let jumlah = parseInt(document.getElementById("jumlah").value) || 0;
-
-      if (jumlah <= 0) {
-        document.getElementById("hasilJoki").innerHTML = "⚠️ Masukkan jumlah summit yang valid!";
-        document.getElementById("waBtnContainer").innerHTML = "";
-        return;
-      }
-
-      // Promo: setiap 2 summit = Rp1000
-      let pasangan = Math.floor(jumlah / 2);
-      let sisa = jumlah % 2;
-      let total = pasangan * 1000 + sisa * 2000;
-
-      let transaksiID = buatID();
-
-      let detail = 
-        `📌 Detail Transaksi\n` +
-        `Gunung: ${gunung}\n` +
-        `Jumlah Order: ${jumlah} summit\n` +
-        `Total Bayar: ${formatRupiah(total)}\n` +
-        `ID Transaksi: ${transaksiID}\n` +
-        `Status: Proses...`;
-
-      document.getElementById("hasilJoki").innerHTML = detail.replace(/\n/g,"<br>");
-
-      let waNumber = "6287778913867"; // kode negara 62
-      let waLink = `https://wa.me/${waNumber}?text=${encodeURIComponent(detail)}`;
-
-      document.getElementById("waBtnContainer").innerHTML = 
-        `<a class="wa-btn" href="${waLink}" target="_blank">📲 Order via WhatsApp</a>`;
+    function updateReceipt(node,itemName){
+      elReceipt.innerHTML=''; let total=0; let idx=1;
+      items.forEach(it=>{
+        let qty=state.get(it.name)||0;
+        if(qty>0){
+          let sub=qty*PRICE; total+=sub;
+          const row=document.createElement('div');
+          row.className='row'; row.innerHTML=`<span>${idx++}. ${it.name} x${qty}</span><span>${formatCurrency(sub)}</span>`;
+          elReceipt.appendChild(row);
+          if(itemName===it.name && node && !node.querySelector('.checkmark')){
+            let mark=document.createElement('div'); mark.className='checkmark'; mark.textContent='✓';
+            node.appendChild(mark); setTimeout(()=>mark.remove(),1200);
+          }
+        }
+      });
+      if(idx===1){elReceipt.innerHTML='<div class="row"><span>Belum ada pilihan</span></div>';}
+      elTotal.textContent='Total: '+formatCurrency(total);
     }
+
+    function generateTransactionId(){
+      return 'TRX-' + Date.now().toString(36).toUpperCase() + '-' + Math.floor(Math.random()*9999);
+    }
+
+    function generateStrukText(trxId){
+      let total=0; let idx=1;
+      let rows=items.map(it=>{
+        let qty=state.get(it.name)||0;
+        if(qty>0){let sub=qty*PRICE; total+=sub;
+          return `${idx++}. ${it.name} x${qty} = ${formatCurrency(sub)}`;
+        }
+        return '';}).filter(Boolean).join('\n');
+      if(total===0) return 'Belum ada item';
+      return `JOKMOUNTWHY\nID Transaksi: ${trxId}\n${rows}\nTotal: ${formatCurrency(total)}`;
+    }
+
+    function generateStrukHTML(){
+      let total=0; let idx=1;
+      const trxId=generateTransactionId();
+      const rows=items.map(it=>{
+        let qty=state.get(it.name)||0;
+        if(qty>0){let sub=qty*PRICE; total+=sub;
+          return `<div class='row'><span>${idx++}. ${it.name} x${qty}</span><span>${formatCurrency(sub)}</span></div>`;}
+        return '';}).join('');
+      if(total===0) return '<p>Belum ada item</p>';
+      return `<h3>JOKMOUNTWHY</h3><p>ID Transaksi: <strong>${trxId}</strong></p>${rows}<div class='row'><strong>Total</strong><strong>${formatCurrency(total)}</strong></div>`;
+    }
+
+    document.getElementById('btnBayar').addEventListener('click',()=>{
+      const trxId=generateTransactionId();
+      modalContent.innerHTML=generateStrukHTML();
+      modal.showModal();
+
+      // Kirim ke WhatsApp
+      const waText=encodeURIComponent(generateStrukText(trxId));
+      window.open(`https://wa.me/${WA_NUMBER}?text=${waText}`, '_blank');
+    });
+
+    document.getElementById('btnClose').addEventListener('click',()=>modal.close());
+    document.getElementById('btnOk').addEventListener('click',()=>modal.close());
+    document.getElementById('btnReset').addEventListener('click',()=>{state.clear(); render();});
+    document.getElementById('btnPrint').addEventListener('click',()=>{
+      const w=window.open('', '_blank');
+      w.document.write(`<!DOCTYPE html><html><head><title>Struk</title><meta charset='utf-8'><style>body{font-family:Arial;padding:20px;background:#111;color:#eee}h3{text-align:center;color:#6ad6ff} .row{display:flex;justify-content:space-between;border-bottom:1px dashed #444;padding:6px 0}</style></head><body>${generateStrukHTML()}</body></html>`);
+      w.document.close(); w.focus(); w.print();
+    });
+
+    render();
   </script>
 </body>
 </html>
